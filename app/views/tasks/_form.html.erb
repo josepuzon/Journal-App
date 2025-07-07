@@ -1,0 +1,29 @@
+<%= form_with model: [task.category, task], local: true do |form| %>
+  <% if task.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(task.errors.count, "error") %> prevented this task from being saved:</h2>
+      <ul>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :task %><br>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :note %><br>
+    <%= form.text_area :note %>
+  </div>
+
+  <div>
+    <%= form.label :due_date %><br>
+    <%= form.date_field :due_date %>
+  </div>
+
+  <%= form.submit %>
+<% end %>

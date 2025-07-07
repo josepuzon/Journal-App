@@ -1,0 +1,23 @@
+<h1>Tasks for Today</h1>
+
+<% if @tasks.any? %>
+  <ul>
+    <% @tasks.each do |task| %>
+      <li>
+        <strong><%= task.title %></strong> – <%= task.category.name %>
+        (<%= link_to "View", category_task_path(task.category, task) %>)
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No tasks for today</p>
+<% end %>
+
+<% current_user.categories.each do |category| %>
+  <p>
+    <%= link_to "+ Add Task to #{category.name}", new_category_task_path(category) %>
+  </p>
+<% end %>
+
+
+<%= link_to "Back to Categories", categories_path %>
