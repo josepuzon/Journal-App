@@ -1,9 +1,13 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, only: [:show, :edit, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
     @categories = current_user.categories
+    @q = Category.ransack(params[:q])
+    @categories = @q.result(distinct: true)
   end
 
   def show
@@ -46,5 +50,13 @@ class CategoriesController < ApplicationController
 
   def category_params
     params.require(:category).permit(:name, :description)
+  end
+
+  def record_not_found
+    redirect_to categories_path, alert: "Category does not exist."
+  end
+
+  def invalid_foreign_key
+    redirect_to @category, alert: "Unable to delete. Category is still referenced to a task."
   end
 end

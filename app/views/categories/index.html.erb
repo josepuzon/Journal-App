@@ -1,5 +1,14 @@
 <h1>My Categories</h1>
 
+<%= search_form_for @q do |f| %>
+  <%= f.label :name_cont %>
+  <%= f.search_field :name_cont %>
+  <%= f.submit %>
+<% end %>
+<br>
+
+<hr>
+
 <%= link_to 'Create New Category', new_category_path %>
 
 <ul>
@@ -15,5 +24,6 @@
   <% end %>
 </ul>
 
+<hr>
 
 <%= link_to "📅 View Today's Tasks", tasks_today_path %>

@@ -2,6 +2,7 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_category, only: [:new, :create, :show, :edit, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def show
   end
@@ -51,5 +52,9 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :note, :due_date)
+  end
+
+  def record_not_found
+    redirect_to new_category_task_path, alert: "Task does not exist | Create a new one."
   end
 end

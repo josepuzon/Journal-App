@@ -13,11 +13,14 @@
   <p>No tasks for today</p>
 <% end %>
 
+<hr>
+
 <% current_user.categories.each do |category| %>
   <p>
     <%= link_to "+ Add Task to #{category.name}", new_category_task_path(category) %>
   </p>
 <% end %>
 
+<hr>
 
 <%= link_to "Back to Categories", categories_path %>
