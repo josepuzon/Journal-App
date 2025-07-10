@@ -1,37 +1,48 @@
-<h1><%= @category.name %></h1>
-<p><%= @category.description %></p>
+<div class="container mt-4">
+  <div class="mb-4">
+    <h1><%= @category.name %></h1>
+    <p class="text-muted"><strong>Description: </strong> <%= @category.description %></p>
+  </div>
 
-<hr>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Tasks to do</h2>
+    <%= link_to "+ Add Task", new_category_task_path(@category), class: "btn btn-primary" %>
+  </div>
 
-<h2>Tasks to do:</h2>
+  <% if @category.tasks.any? %>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <% @category.tasks.each do |task| %>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title"><%= task.title %></h5>
 
-<% if @category.tasks.any? %>
-  <ul>
-    <% @category.tasks.each do |task| %>
-      <li>
-        <strong><%= task.title %></strong>
-        <% if task.note.present? %>
-          <br>
-          <em>Note:</em> <%= task.note %>
-        <% end %>
-        <br>
-        <small>(due <%= task.due_date || "no due date" %>)</small>
-        <br>
-        <%= link_to "View", category_task_path(@category, task) %> |
-        <%= link_to "Edit", edit_category_task_path(@category, task) %> |
-        <%= link_to "Delete", category_task_path(@category, task), data: {
-          turbo_method: :delete,
-          turbo_confirm: "Are you sure?"
-        } %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No tasks in this category yet.</p>
-<% end %>
+              <% if task.note.present? %>
+                <p class="card-text"><strong>Note:</strong> <%= task.note %></p>
+              <% end %>
 
-<%= link_to "+ Add Task", new_category_task_path(@category) %>
+              <p class="card-text">
+                <small class="text-muted">
+                  Due: <%= task.due_date || "No due date" %>
+                </small>
+              </p>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <%= link_to "View", category_task_path(@category, task), class: "btn btn-sm btn-outline-primary" %>
+              <%= link_to "✏️ Edit", edit_category_task_path(@category, task), class: "btn btn-sm btn-outline-secondary" %>
+              <%= link_to "🗑️ Delete", category_task_path(@category, task),
+                          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                          class: "btn btn-sm btn-outline-danger" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">No tasks in this category yet.</div>
+  <% end %>
 
-<hr>
-
-<%= link_to "Back to Categories", categories_path %>
+  <div class="mt-4">
+    <%= link_to "⬅ Back to Categories", categories_path, class: "btn btn-outline-secondary" %>
+  </div>
+</div>

@@ -1,29 +1,47 @@
-<h1>My Categories</h1>
+<div class="container mt-4">
 
-<%= search_form_for @q do |f| %>
-  <%= f.label :name_cont %>
-  <%= f.search_field :name_cont %>
-  <%= f.submit %>
-<% end %>
-<br>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">My To-Do List</h1>
+    <%= link_to "➕ New Category", new_category_path, class: "btn btn-primary" %>
+  </div>
 
-<hr>
-
-<%= link_to 'Create New Category', new_category_path %>
-
-<ul>
-  <% @categories.each do |category| %>
-    <li>
-      <h3><%= link_to category.name, category_path(category) %></h3> |
-      <%= link_to 'Edit', edit_category_path(category) %> |
-      <%= link_to 'Delete', category_path(category), data: {
-      turbo_method: :delete,
-      turbo_confirm: "Are you sure?"
-    } %>
-    </li>
+  <!-- Search Form -->
+  <%= search_form_for @q, html: { class: "mb-4" } do |f| %>
+    <div class="row g-2 align-items-center">
+      <div class="col-auto">
+        <%= f.label :name_cont, "Search", class: "form-label" %>
+      </div>
+      <div class="col">
+        <%= f.search_field :name_cont, class: "form-control" %>
+      </div>
+      <div class="col-auto">
+        <%= f.submit "Search", class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
   <% end %>
-</ul>
 
-<hr>
+  <hr>
 
-<%= link_to "📅 View Today's Tasks", tasks_today_path %>
+  <% if @categories.any? %>
+    <ul class="list-group mb-4">
+      <% @categories.each do |category| %>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div>
+            <h5 class="mb-1"><%= link_to category.name, category_path(category), class: "text-decoration-none" %></h5>
+          </div>
+          <div class="btn-group btn-group-sm">
+            <%= link_to "✏️ Edit", edit_category_path(category), class: "btn btn-outline-secondary" %>
+            <%= link_to "🗑️ Delete", category_path(category),
+                        data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                        class: "btn btn-outline-danger" %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="alert alert-info">No categories found.</div>
+  <% end %>
+
+  <%= link_to "📅 View Today's Tasks", tasks_today_path, class: "btn btn-outline-primary" %>
+
+</div>

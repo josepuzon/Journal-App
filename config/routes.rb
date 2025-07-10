@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "errors/not_found"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -17,7 +18,9 @@ Rails.application.routes.draw do
 
   get "/tasks/today", to: "tasks#today"
 
-  resources :categories do
-    resources :tasks
+  resources :categories, constraints: { id: /\d+/ } do
+    resources :tasks, constraints: { id: /\d+/ }
   end
+
+  match "*unmatched", to: "errors#not_found", via: :all
 end

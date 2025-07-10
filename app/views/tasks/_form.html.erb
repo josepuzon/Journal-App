@@ -1,29 +1,39 @@
-<%= form_with model: [task.category, task], local: true do |form| %>
-  <% if task.errors.any? %>
-    <div class="errors">
-      <h2><%= pluralize(task.errors.count, "error") %> prevented this task from being saved:</h2>
-      <ul>
-        <% task.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h4 class="mb-0"><%= task.new_record? ? "New Task" : "Edit Task" %></h4>
     </div>
-  <% end %>
+    <div class="card-body">
+      <%= form_with model: [task.category, task], local: true do |form| %>
+        <% if task.errors.any? %>
+          <div class="alert alert-danger">
+            <h5><%= pluralize(task.errors.count, "error") %> below:</h5>
+            <ul>
+              <% task.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
 
-  <div>
-    <%= form.label :task %><br>
-    <%= form.text_field :title %>
+        <div class="mb-3">
+          <%= form.label :title, "Task Title", class: "form-label" %>
+          <%= form.text_field :title, class: "form-control", autofocus: true %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :note, class: "form-label" %>
+          <%= form.text_area :note, class: "form-control", rows: 3 %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :due_date, class: "form-label" %>
+          <%= form.date_field :due_date, class: "form-control" %>
+        </div>
+
+        <%= form.submit "Save Task", class: "btn btn-primary" %>
+        <%= link_to "Cancel", category_path(task.category), class: "btn btn-outline-secondary ms-2" %>
+      <% end %>
+    </div>
   </div>
-
-  <div>
-    <%= form.label :note %><br>
-    <%= form.text_area :note %>
-  </div>
-
-  <div>
-    <%= form.label :due_date %><br>
-    <%= form.date_field :due_date %>
-  </div>
-
-  <%= form.submit %>
-<% end %>
+</div>

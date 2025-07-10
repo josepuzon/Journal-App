@@ -4,15 +4,14 @@ class TasksController < ApplicationController
   before_action :set_category, only: [:new, :create, :show, :edit, :update, :destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-  def show
-  end
+  def show; end
 
   def new
-    @task = @category.tasks.build
+    @task = @category.tasks.new
   end
 
   def create
-    @task = @category.tasks.build(task_params)
+    @task = @category.tasks.new(task_params)
     if @task.save
       redirect_to category_task_path(@category, @task), notice: "Task created successfully."
     else
@@ -20,8 +19,7 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @task.update(task_params)
