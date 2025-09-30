@@ -58,4 +58,4 @@ end
 
 gem 'devise', '~> 4.9', '>= 4.9.4'
 
-gem 'ransack', '~> 4.3'
+gem 'ransack', '~> 4.4'
